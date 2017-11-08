@@ -9,7 +9,13 @@ public enum InitCellState {
 	Six,
 	Seven,
 	Eight,
-	Mine,
-	Exploded;
+	Mine;
+	
+	private static InitCellState[] allValues = values();
+	
+    public static InitCellState fromOrdinal(int n) {
+    	return allValues[n];
+    }
+    
 }
 
