@@ -1,9 +1,21 @@
 import java.util.Scanner;
 
+/**
+ * @author jennaprice
+ * @version 1.0
+ */
+
 public class Validator {
 
 	static Scanner sc = new Scanner(System.in);
 
+	/**
+	 * This method returns a String from the User
+	 * 
+	 * @param prompt
+	 *            - the String message you would like displayed prompting the user
+	 * @return
+	 */
 	public static String getString(String prompt) {
 		System.out.print(prompt);
 		String s = sc.next(); // read user entry
@@ -11,6 +23,15 @@ public class Validator {
 		return s;
 	}
 
+	/**
+	 * This method returns a String from the choices you specify
+	 * 
+	 * @param prompt
+	 *            - the String message you would like displayed prompting the user
+	 * @param choices
+	 *            - an array of the Strings you would like to accept from the user
+	 * @return
+	 */
 	public static String getSpecificString(String prompt, String[] choices) {
 		boolean validInput = false;
 		String correct;
@@ -38,6 +59,14 @@ public class Validator {
 		return correct;
 	}
 
+	/**
+	 * This method returns and int from user input
+	 * 
+	 * @param prompt
+	 *            - the String message you would like displayed prompting the user
+	 * @param prompt
+	 * @return
+	 */
 	public static int getInt(String prompt) {
 		int i = 0;
 		boolean isValid = false;
@@ -54,7 +83,18 @@ public class Validator {
 		return i;
 	}
 
-	public static int getInt(Scanner sc, String prompt, int min, int max) {
+	/**
+	 * This method returns an int from user input
+	 * 
+	 * @param prompt
+	 *            - the String message you would displayed prompting the user
+	 * @param min
+	 *            - min int to accept from user
+	 * @param max
+	 *            - min int to accept from user
+	 * @return
+	 */
+	public static int getInt(String prompt, int min, int max) {
 		int i = 0;
 		boolean isValid = false;
 		while (isValid == false) {
@@ -69,7 +109,14 @@ public class Validator {
 		return i;
 	}
 
-	public static double getDouble(Scanner sc, String prompt) {
+	/**
+	 * The method returns the double entered by user
+	 * 
+	 * @param prompt
+	 *            - the String message you would displayed prompting the user
+	 * @return
+	 */
+	public static double getDouble(String prompt) {
 		double d = 0;
 		boolean isValid = false;
 		while (isValid == false) {
@@ -85,11 +132,22 @@ public class Validator {
 		return d;
 	}
 
-	public static double getDouble(Scanner sc, String prompt, double min, double max) {
+	/**
+	 * This method returns a doubel within a set up specified parameters
+	 * 
+	 * @param prompt
+	 *            - the String message you would displayed prompting the user
+	 * @param min
+	 *            - min double you would like to accept
+	 * @param max
+	 *            - max double you would like to accept
+	 * @return
+	 */
+	public static double getDouble(String prompt, double min, double max) {
 		double d = 0;
 		boolean isValid = false;
 		while (isValid == false) {
-			d = getDouble(sc, prompt);
+			d = getDouble(prompt);
 			if (d < min)
 				System.out.println("Error! Number must be " + min + " or greater.");
 			else if (d > max)
@@ -100,7 +158,20 @@ public class Validator {
 		return d;
 	}
 
-	// you have to initialize and update a count or your for loop will run forever
+	/**
+	 * A method that handles the logic for a loop that has to run once before it
+	 * prompts the user
+	 * 
+	 * @param runTimes
+	 *            - how many times this loop has run, you need to update in the
+	 *            while loop, or this will cause your loop to never ask the user the
+	 *            prompt
+	 * @param prompt
+	 *            - String you would like displayed to the user
+	 * @param continuance
+	 *            - the String they would need to enter to continue the program
+	 * @return
+	 */
 	public static boolean doOnceContinueProgram(int runTimes, String prompt, String continuance) {
 		boolean contBoolean = false;
 
@@ -113,6 +184,15 @@ public class Validator {
 		return contBoolean;
 	}
 
+	/**
+	 * This method has the logic for continuing a while loop on the users input
+	 * 
+	 * @param prompt
+	 *            - String you would like displayed to the user
+	 * @param continuance
+	 *            - the String they would need to enter to continue the program
+	 * @return
+	 */
 	public static boolean continueProgram(String prompt, String continuance) {
 		boolean contBoolean = false;
 
@@ -122,18 +202,11 @@ public class Validator {
 		return contBoolean;
 	}
 
-	public static boolean continueProgram(int runTimes, String prompt) {
-		boolean contBoolean = false;
-
-		if (runTimes != 0) {
-			String cont = getString(prompt);
-			contBoolean = cont.equalsIgnoreCase("y");
-		} else {
-			contBoolean = true;
-		}
-		return contBoolean;
-	}
-
+	/**
+	 * Because this class has an embedded Scanner object, at the end of any method
+	 * that uses this class we need to call this method to close the scanner
+	 * 
+	 */
 	public static void closeScanner() {
 		sc.close();
 	}
