@@ -9,7 +9,7 @@
 public class CellField {
 	private final int[] location;
 	private ViewState viewStatus;
-	// private InitCellState cellState;
+	private InitCellState cellState;
 
 	/**
 	 * @param xCordinate
@@ -21,4 +21,17 @@ public class CellField {
 		location = new int[] { xCordinate, yCordintate };
 		viewStatus = ViewState.COVERED;
 	}
+
+	public ViewState getViewStatus() {
+		return viewStatus;
+	}
+
+	public void setViewStatus(ViewState viewStatus) {
+		this.viewStatus = viewStatus;
+	}
+
+	public int[] getLocation() {
+		return location;
+	}
+
 }
