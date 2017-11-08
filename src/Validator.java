@@ -69,7 +69,7 @@ public class Validator {
 		return i;
 	}
 
-	public static double getDouble(Scanner sc, String prompt) {
+	public static double getDouble(String prompt) {
 		double d = 0;
 		boolean isValid = false;
 		while (isValid == false) {
@@ -85,11 +85,11 @@ public class Validator {
 		return d;
 	}
 
-	public static double getDouble(Scanner sc, String prompt, double min, double max) {
+	public static double getDouble(String prompt, double min, double max) {
 		double d = 0;
 		boolean isValid = false;
 		while (isValid == false) {
-			d = getDouble(sc, prompt);
+			d = getDouble(prompt);
 			if (d < min)
 				System.out.println("Error! Number must be " + min + " or greater.");
 			else if (d > max)
