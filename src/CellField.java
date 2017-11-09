@@ -51,6 +51,14 @@ public class CellField {
 		return location;
 	}
 
+	public boolean checkLocation() {
+		boolean explosion = true;
+		if (initState == InitCellState.Mine) {
+			explosion = false;
+		}
+		return explosion;
+	}
+
 	/**
 	 * Displays String representation of the cellLocation
 	 * 

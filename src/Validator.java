@@ -9,7 +9,10 @@ public class Validator {
 
 	static Scanner sc = new Scanner(System.in);
 
-	public static void parseString() {
+	public static boolean parseStringCellLocation(CellField[][] gameMinefield) {
+		boolean flagged;
+		System.out.println("Choose your cell in index and if you want to flag that index...");
+		System.out.println("only choose F for flagging a mine and G if not flagging at all");
 		String usersChoiceLocation = getString("Use the following format 1,1,F or 1,1,G: ");
 		String[] usersLoc1 = usersChoiceLocation.split(",");
 		String userLoc1A = usersLoc1[0];
@@ -17,11 +20,23 @@ public class Validator {
 		String userLoc1C = usersLoc1[2];
 		int userLocA = Integer.parseInt(userLoc1A);
 		int userLocB = Integer.parseInt(userLoc1B);
-		String box = "this should never be";
 		System.out.println(userLoc1C);
 		System.out.println(userLocA);
 		System.out.println(userLocB);
+		CellField calledCell = gameMinefield[userLocA][userLocB];
+		if (userLoc1C.equalsIgnoreCase("f")) {
+			calledCell.setViewState(ViewStatus.FLAGGED);
+			flagged = true;
+			return true;
+		} else {
+
+			calledCell.setViewState(ViewStatus.UNCOVERED);
+			return calledCell.checkLocation();
+			// we will call tristan's method TO CEHCK OTHER CELLS (userLocA, userLocB,
+			// flagged);
+		}
 	}
+
 	/**
 	 * This method returns a String from the User
 	 * 

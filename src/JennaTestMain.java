@@ -6,7 +6,7 @@ public class JennaTestMain {
 
 		System.out.println(zeroZero.displayCell());
 		zeroZero.setCellState(InitCellState.Three);
-		zeroZero.setViewStatus(ViewState.FLAGGED);
+		zeroZero.setViewState(ViewStatus.FLAGGED);
 
 		System.out.println(zeroZero.displayCell());
 
