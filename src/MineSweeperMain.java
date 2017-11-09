@@ -18,10 +18,8 @@ public class MineSweeperMain {
 			System.out.println();
 		}
 		// here I will pick a spot
-		int row = Validator.getInt("Please choose a row (0-" + mineSweeperField[0].length + "0", 0,
-				mineSweeperField[0].length);
-		int column = Validator.getInt("Please choose a column (0-" + mineSweeperField.length + "0", 0,
-				mineSweeperField.length);
+		int row = Validator.getInt("Please choose a row (0-9)", 0, 9);
+		int column = Validator.getInt("Please choose a column (0-9", 0, 9);
 		mineSweeperField[row][column].chooseCell();
 		displayGame(mineSweeperField);
 	}
