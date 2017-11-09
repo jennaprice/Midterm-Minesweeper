@@ -82,4 +82,8 @@ public class CellField {
 		this.cellState = cellState;
 	}
 
+	public void chooseCell() {
+		viewStatus = ViewState.UNCOVERED;
+	}
+
 }
