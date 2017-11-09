@@ -11,44 +11,41 @@ public class MineDisplay {
 		// TODO Auto-generated method stub
 		Scanner scn = new Scanner(System.in);
 		// user choosing size of mine
-		System.out.println("How many cells height would you like your mine?");
-		int minHeight = scn.nextInt();
 		System.out.println("How many cells wide would you like your mine?");
 		int minWidth = scn.nextInt();
-		// char[] chHeight = new char[mineHeight];
-		char ch = '\u2610';
-		char as = '\u229B';
-		char fl = '\u2691';
-		//System.out.println(as);
-		//System.out.println(fl);
-
+		System.out.println("How many cells height would you like your mine?");
+		int minHeight = scn.nextInt();
+		GameInstance runningGame = new GameInstance(minWidth, minHeight);
+		runningGame.displayGame();
 		// original display
-		makeOuterDisplayWidth(minWidth, 0);
-		makeDisplay(minHeight, minWidth, ch);
+		//makeOuterDisplayWidth(minWidth, 0);
+		//makeDisplay(minHeight, minWidth, ch);
 
 		// user chooses a cell and if they want to flag it
 		// System.out.println("Choose your cell in index format and if you want to flag
 		// that index:");
 		System.out.println("Choose your cell in index and if you want to flag that index...");
 		System.out.println("only choose F for flagging a mine and G if not flagging at all");
-		String usersChoiceLocation = Validator.getString("Use the following format 1,1,F or 1,1,G: ");
-		String[] usersLoc1 = usersChoiceLocation.split(",");
-		String userLoc1A = usersLoc1[0];
-		String userLoc1B = usersLoc1[1];
-		String userLoc1C = usersLoc1[2];
-		int userLocA = Integer.parseInt(userLoc1A);
-		int userLocB = Integer.parseInt(userLoc1B);
-		String box = "this should never be";
-		System.out.println(userLoc1C);
-		System.out.println(userLocA);
-		System.out.println(userLocB);
+		Validator.parseString();
+		
+//		String usersChoiceLocation = Validator.getString("Use the following format 1,1,F or 1,1,G: ");
+//		String[] usersLoc1 = usersChoiceLocation.split(",");
+//		String userLoc1A = usersLoc1[0];
+//		String userLoc1B = usersLoc1[1];
+//		String userLoc1C = usersLoc1[2];
+//		int userLocA = Integer.parseInt(userLoc1A);
+//		int userLocB = Integer.parseInt(userLoc1B);
+//		String box = "this should never be";
+//		System.out.println(userLoc1C);
+//		System.out.println(userLocA);
+//		System.out.println(userLocB);
 
 		/****
 		 * verification variables: box
 		 * 
 		 */
 
-		scn.nextLine();
+		/*
 		System.out.println(" Please provide number in box: ");
 		box = scn.nextLine();
 
@@ -79,7 +76,7 @@ public class MineDisplay {
 		
 		else {
 			System.out.println();
-		}
+		}*/
 	
 
 	 scn.close();

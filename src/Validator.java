@@ -9,6 +9,19 @@ public class Validator {
 
 	static Scanner sc = new Scanner(System.in);
 
+	public static void parseString() {
+		String usersChoiceLocation = getString("Use the following format 1,1,F or 1,1,G: ");
+		String[] usersLoc1 = usersChoiceLocation.split(",");
+		String userLoc1A = usersLoc1[0];
+		String userLoc1B = usersLoc1[1];
+		String userLoc1C = usersLoc1[2];
+		int userLocA = Integer.parseInt(userLoc1A);
+		int userLocB = Integer.parseInt(userLoc1B);
+		String box = "this should never be";
+		System.out.println(userLoc1C);
+		System.out.println(userLocA);
+		System.out.println(userLocB);
+	}
 	/**
 	 * This method returns a String from the User
 	 * 
