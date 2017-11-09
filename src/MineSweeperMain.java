@@ -1,7 +1,9 @@
-
 public class MineSweeperMain {
+
 	public static void main(String[] args) {
-		InitCellState[][] trueMF = InitMinefield.genMineFieldEnums(3, 3);
+
+		InitCellState[][] trueMF = InitMinefield.genMineFieldEnums(10, 10);
+
 		for (InitCellState[] row : trueMF) {
 			for (int i = 0; i < row.length; i++) {
 				System.out.print(row[i].ordinal());
@@ -10,27 +12,30 @@ public class MineSweeperMain {
 		}
 
 		System.out.println();
-		CellField[][] mineSweeperField = InitMinefield.genMineFieldObjects(3, 3);
-		for (CellField[] row : mineSweeperField) {
-			for (int i = 0; i < row.length; i++) {
-				System.out.print(row[i].displayCell());
-			}
-			System.out.println();
-		}
-		// here I will pick a spot
-		int row = Validator.getInt("Please choose a row (0-9)", 0, 9);
-		int column = Validator.getInt("Please choose a column (0-9", 0, 9);
-		mineSweeperField[row][column].chooseCell();
+		CellField[][] mineSweeperField = InitMinefield.genMineFieldObjects(10, 10);
+
+		mineSweeperField[7][5].setViewState(ViewStatus.UNCOVERED);
+		displayGame(mineSweeperField);
+		mineSweeperField[5][7].setViewState(ViewStatus.UNCOVERED);
 		displayGame(mineSweeperField);
 	}
 
 	public static void displayGame(CellField[][] mineSweeperField) {
+		int k = 1;
+		System.out.println("0 1 2 3 4 5 6 7 8 9 10");
+
 		for (CellField[] row : mineSweeperField) {
-			for (int i = 0; i < row.length; i++) {
-				System.out.print(row[i].displayCell());
+			if (k < 10) {
+				System.out.print(k + " ");
+			} else {
+				System.out.print(k);
 			}
+			for (int i = 0; i < row.length; i++) {
+				System.out.print(" " + row[i].displayCell());
+
+			}
+			k++;
 			System.out.println();
 		}
-
 	}
 }

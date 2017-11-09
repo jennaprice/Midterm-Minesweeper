@@ -5,6 +5,6 @@
  * @author jennaprice
  *
  */
-public enum ViewState {
+public enum ViewStatus {
 	COVERED, UNCOVERED, FLAGGED;
 }

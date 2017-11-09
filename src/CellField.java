@@ -8,8 +8,8 @@
 
 public class CellField {
 	private final int[] location;
-	private ViewState viewStatus;
-	private InitCellState cellState;
+	private ViewStatus viewState;
+	private InitCellState initState;
 
 	/**
 	 * cellField is an object that describes the location, and the various states of
@@ -22,16 +22,16 @@ public class CellField {
 	 */
 	public CellField(int xCordinate, int yCordintate) {
 		location = new int[] { xCordinate, yCordintate };
-		viewStatus = ViewState.COVERED;
-		cellState = InitCellState.Free;
+		viewState = ViewStatus.COVERED;
+		initState = InitCellState.Free;
 	}
 
 	/**
 	 * 
 	 * @return
 	 */
-	public ViewState getViewStatus() {
-		return viewStatus;
+	public ViewStatus getViewStatus() {
+		return viewState;
 	}
 
 	/**
@@ -40,8 +40,8 @@ public class CellField {
 	 *            gives the status of whether or not the cellLocation has been
 	 *            previously views
 	 */
-	public void setViewStatus(ViewState viewStatus) {
-		this.viewStatus = viewStatus;
+	public void setViewState(ViewStatus viewState) {
+		this.viewState = viewState;
 	}
 
 	/**
@@ -59,15 +59,17 @@ public class CellField {
 	 */
 	public String displayCell() {
 
-		if (viewStatus.toString().equalsIgnoreCase("covered")) {
-			return String.valueOf('\u2610');
-		} else if (viewStatus.toString().equalsIgnoreCase("flagged")) {
-			return "F";
+		if (viewState.toString().equalsIgnoreCase("covered")) {
+			return String.valueOf('\u2588');
+		} else if (viewState.toString().equalsIgnoreCase("flagged")) {
+			return String.valueOf('\u2691');
+		} else if (initState.ordinal() == 9) { // bombs
+			return String.valueOf('\u229b');
+		} else if (initState.ordinal() == 0) {
+			return String.valueOf('\u25a1');
 		} else {
-			if (cellState.ordinal() > 0) {
-				return String.valueOf(cellState.ordinal());
-			} else if (cellState.ordinal() == 0) {
-				return " ";
+			if (initState.ordinal() > 0) {
+				return String.valueOf(initState.ordinal());
 			}
 
 		}
@@ -75,15 +77,15 @@ public class CellField {
 	}
 
 	public InitCellState getCellState() {
-		return cellState;
+		return initState;
 	}
 
-	public void setCellState(InitCellState cellState) {
-		this.cellState = cellState;
+	public void setCellState(InitCellState initState) {
+		this.initState = initState;
 	}
 
 	public void chooseCell() {
-		viewStatus = ViewState.UNCOVERED;
+		viewState = ViewStatus.UNCOVERED;
 	}
 
 }

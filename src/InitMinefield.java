@@ -44,7 +44,9 @@ public class InitMinefield {
 		for (int i = 0; i < mineField.length; i++) {
 			for (int j = 0; j < mineField[i].length; j++) {
 				mineField[i][j] = new CellField(i, j);
+				// System.out.print(mineField[i][j].getCellState());
 			}
+			// System.out.println();
 		}
 
 		// Randomly populate true minefield with mines
@@ -78,7 +80,7 @@ public class InitMinefield {
 		}
 
 		// Randomly populate true minefield with mines
-		Random r = new Random();
+		Random r = new Random(5);
 		int minesPlacedSoFar = 0;
 		while (minesPlacedSoFar < mineC) {
 			int x = r.nextInt(sideL);
@@ -126,6 +128,7 @@ public class InitMinefield {
 					trueMF[y][x] = minesNear(y, x, sideL, trueMF);
 				}
 			}
+
 		}
 	}
 
