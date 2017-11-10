@@ -6,14 +6,14 @@ public class GameInstance {
 	 * @param width
 	 * @param height
 	 */
-	public GameInstance(int width, int height) {
-		gameMineField = InitMinefield.genMineFieldObjects(height, width);
+	public GameInstance(int sideLength, int mineCount) {
+		gameMineField = InitMinefield.genMineFieldObjects(sideLength, mineCount);
 	}
 
 	public CellField[][] getGameMineField() {
 		return gameMineField;
 	}
-
+	
 	public void setGameMineField(CellField[][] gameMineField) {
 		this.gameMineField = gameMineField;
 	}

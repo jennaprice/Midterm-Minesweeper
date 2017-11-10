@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 // import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
@@ -11,12 +12,13 @@ public class MineDisplay {
 		// TODO Auto-generated method stub
 		Scanner scn = new Scanner(System.in);
 		// user choosing size of mine
-		System.out.println("How many cells wide would you like your mine?");
-		int minWidth = scn.nextInt();
-		System.out.println("How many cells height would you like your mine?");
-		int minHeight = scn.nextInt();
-		GameInstance runningGame = new GameInstance(minWidth, minHeight);
-		runningGame.displayGame();
+		
+		int inputSideLength= Validator.getInt("How big would you want the side length of the minefield? ");
+		
+//		int minWidth = scn.nextInt();
+//		System.out.println("How many cells height would you like your mine?");
+//		int minHeight = scn.nextInt();
+		
 		// original display
 		// makeOuterDisplayWidth(minWidth, 0);
 		// makeDisplay(minHeight, minWidth, ch);
@@ -24,14 +26,25 @@ public class MineDisplay {
 		// user chooses a cell and if they want to flag it
 		// System.out.println("Choose your cell in index format and if you want to flag
 		// that index:");
-
-		while (Validator.parseStringCellLocation(runningGame.getGameMineField())) {
-			runningGame.displayGame();
-		}
-
-		System.out.println("You Exploded!");
+		GameInstance runningGame = new GameInstance(inputSideLength, 9);
 		runningGame.displayGame();
+		//while()
+		int xInput = Validator.getInt("Enter horizontal index of cell you want to flag or check: ", 1, inputSideLength);
+		int yInput = Validator.getInt("Enter vertical index of cell you want to flag or check: ", 1, inputSideLength);
+		boolean trueFlag = getFlagOrUncover(scn);
+		MineController.processInput(yInput-1, xInput-1, trueFlag, inputSideLength, runningGame.getGameMineField());
+		runningGame.displayGame();
+		System.out.println();
+		
+		
+//		while (true) {
+//			runningGame.displayGame();
+//		}
 
+		//System.out.println("You Exploded!");
+		//runningGame.displayGame();
+		
+		
 		// String usersChoiceLocation = Validator.getString("Use the following format
 		// 1,1,F or 1,1,G: ");
 		// String[] usersLoc1 = usersChoiceLocation.split(",");
@@ -73,9 +86,31 @@ public class MineDisplay {
 		 * 
 		 * else { System.out.println(); }
 		 */
-
+	
 		scn.close();
 	}
+	
+	public static boolean getFlagOrUncover(Scanner sc) {
+        System.out.print("Enter F/f for marking the cell with a flag or U/u for uncovering cell. ");
+        ArrayList<String> validOptions = new ArrayList<>();
+        validOptions.add("f");
+        validOptions.add("u");
+        validOptions.add("F");
+        validOptions.add("U");
+        String inputString = sc.next(); // read user entry
+        while (!validOptions.contains(inputString)) {
+            System.out.println("Please enter one of the following options: " + validOptions.toString());
+            inputString = sc.next();
+        }
+        sc.nextLine(); // discard any other data entered on the line
+        if (inputString.equalsIgnoreCase("F")) {
+        		System.out.println("true");
+        		return true;
+        }else {
+        		System.out.println("false");
+        		return false;
+        }
+    }
 
 	/**
 	 * method for box display
