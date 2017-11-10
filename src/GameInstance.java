@@ -29,7 +29,7 @@ public class GameInstance {
 	public void displayGame() {
 		int k = 1;
 		// System.out.println("0 1 2 3 4 5 6 7 8 9 10");
-		for (int r = 0; r <= gameMineField.length; r++) {
+		for (int r = 0; r <= gameMineField[0].length; r++) {
 
 			System.out.print(r + " ");
 			if (r == 0) {
