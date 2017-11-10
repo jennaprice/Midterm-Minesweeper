@@ -13,7 +13,7 @@ public class MineDisplay {
 		Scanner scn = new Scanner(System.in);
 		// user choosing size of mine
 		
-		int inputSideLength= Validator.getInt("How big would you want the side length of the minefield? ");
+		int inputSideLength = Validator.getInt("How big would you want the side length of the minefield? ");
 		
 //		int minWidth = scn.nextInt();
 //		System.out.println("How many cells height would you like your mine?");
@@ -28,14 +28,16 @@ public class MineDisplay {
 		// that index:");
 		GameInstance runningGame = new GameInstance(inputSideLength, 9);
 		runningGame.displayGame();
+		boolean loseCondition = false;
+		while(!loseCondition) {
 		//while()
 		int xInput = Validator.getInt("Enter horizontal index of cell you want to flag or check: ", 1, inputSideLength);
 		int yInput = Validator.getInt("Enter vertical index of cell you want to flag or check: ", 1, inputSideLength);
 		boolean trueFlag = getFlagOrUncover(scn);
-		MineController.processInput(yInput-1, xInput-1, trueFlag, inputSideLength, runningGame.getGameMineField());
+		loseCondition = MineController.processInput(yInput-1, xInput-1, trueFlag, inputSideLength, runningGame.getGameMineField());
 		runningGame.displayGame();
 		System.out.println();
-		
+		}
 		
 //		while (true) {
 //			runningGame.displayGame();
@@ -104,10 +106,10 @@ public class MineDisplay {
         }
         sc.nextLine(); // discard any other data entered on the line
         if (inputString.equalsIgnoreCase("F")) {
-        		System.out.println("true");
+        		//System.out.println("true");
         		return true;
         }else {
-        		System.out.println("false");
+        		//System.out.println("false");
         		return false;
         }
     }
