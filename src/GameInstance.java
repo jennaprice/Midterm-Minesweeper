@@ -1,6 +1,7 @@
 
 public class GameInstance {
 	CellField[][] gameMineField;
+	int remainingSquaresCounter;
 
 	/**
 	 * @param width
@@ -8,12 +9,18 @@ public class GameInstance {
 	 */
 	public GameInstance(int sideLength, int mineCount) {
 		gameMineField = InitMinefield.genMineFieldObjects(sideLength, mineCount);
+		remainingSquaresCounter = (sideLength * sideLength) - mineCount;
+	}
+	
+	public GameInstance(int width, int height, int mineCount) {
+		gameMineField = InitMinefield.genMineFieldObjects(width, height, mineCount);
+		remainingSquaresCounter = (width * height) - mineCount;
 	}
 
 	public CellField[][] getGameMineField() {
 		return gameMineField;
 	}
-	
+
 	public void setGameMineField(CellField[][] gameMineField) {
 		this.gameMineField = gameMineField;
 	}
@@ -43,5 +50,23 @@ public class GameInstance {
 			k++;
 			System.out.println();
 		}
+
+	}
+
+	public boolean winCondition() {
+		int uncoveredPoints = 0;
+		for (int i = 0; i < gameMineField.length; i++) {
+			for (int j = 0; j < gameMineField[i].length; j++) {
+				if (gameMineField[i][j].getViewStatus() == ViewStatus.UNCOVERED) {
+					uncoveredPoints++;
+				}
+			}
+		}
+		if (uncoveredPoints == remainingSquaresCounter) {
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 }

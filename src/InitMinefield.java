@@ -15,7 +15,11 @@ public class InitMinefield {
 		calculateNeighbors(sideLength, minesweeperField);
 		return minesweeperField;
 	}
-
+	
+	
+	public static CellField[][] genMineFieldObjects(int width, int height, int mineCount) {
+		return null;
+	}
 	/**
 	 * @param sideLength
 	 *            Number of mines we want to distribute to the mine
