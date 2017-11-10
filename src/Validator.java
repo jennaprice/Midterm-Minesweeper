@@ -50,6 +50,41 @@ public class Validator {
 		sc.nextLine(); // discard any other data entered on the line
 		return s;
 	}
+	public static String getStringSize(String prompt) {
+		
+		boolean isValid = false;
+		System.out.print(prompt);
+		String s = sc.next(); // read user entry
+		sc.nextLine(); // discard any other data entered on the line
+		while (isValid == false) {
+			if (s.equalsIgnoreCase("small") || s.equalsIgnoreCase("medium") || s.equalsIgnoreCase("large") || s.equalsIgnoreCase("custom")) {
+				isValid = true;
+				System.out.println("your choice is valid. please continue game....");
+			}
+		else {
+			System.out.println("Error! Invalid choice. Try again.");
+		}
+		}
+		return s.toLowerCase();
+	}
+public static String getStringDifficulty(String prompt) {
+		
+		boolean isValid = false;
+		System.out.print(prompt);
+		String s = sc.next(); // read user entry
+		sc.nextLine(); // discard any other data entered on the line
+		while (isValid == false) {
+			if (s.equalsIgnoreCase("Easy") || s.equalsIgnoreCase("Medium") || s.equalsIgnoreCase("Hard") || s.equalsIgnoreCase("Custom")) {
+				isValid = true;
+				System.out.println("your choice is valid. please continue game....");
+			}
+		else {
+			System.out.println("Error! Invalid choice. Try again.");
+		}
+		}
+		return s.toLowerCase();
+	}
+	
 
 	/**
 	 * This method returns a String from the choices you specify

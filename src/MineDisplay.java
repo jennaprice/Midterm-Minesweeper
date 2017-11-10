@@ -4,7 +4,55 @@ import java.util.Scanner;
 // import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
 public class MineDisplay {
+	static int inputSideHeight;
+	static int inputSideWidth;
+	static int numMines;
+	public static void determineSizeAndDifficulty(String mineFieldSize, String mineFieldDiff) {
 
+		if (mineFieldSize.equals("small")) {
+			inputSideHeight = 10;
+			inputSideWidth =10;
+			if (mineFieldDiff.equals("easy")) {
+				numMines = (int) ((double)((inputSideHeight * inputSideWidth))*(10.0/100.0));
+			}else if (mineFieldDiff.equals("medium")) {
+				numMines = (int) ((double)((inputSideHeight * inputSideWidth))*(25.0/100.0));
+			}else if (mineFieldDiff.equals("Hard")) {
+				numMines = (int) ((double)((inputSideHeight * inputSideWidth))*(40.0/100.0));
+			}else if (mineFieldDiff.equals("Custom")) {
+				numMines = Validator.getInt("How many mines do you want to test yourself against?" , 1, 99);
+			}
+		}else if (mineFieldSize.equals("medium")) {
+			inputSideHeight = 50;
+			inputSideWidth = 50;
+			if (mineFieldDiff.equals("easy")) {
+				numMines = (int) ((double)((inputSideHeight * inputSideWidth))*(10.0/100.0));
+			}else if (mineFieldDiff.equals("medium")) {
+				numMines = (int) ((double)((inputSideHeight * inputSideWidth))*(25.0/100.0));
+			}else if (mineFieldDiff.equals("Hard")) {
+				numMines = (int) ((double)((inputSideHeight * inputSideWidth))*(40.0/100.0));
+			}else if (mineFieldDiff.equals("Custom")) {
+				numMines = Validator.getInt("How many mines do you want to test yourself against?", 1, 199);
+			}
+		}else if (mineFieldSize.equals("large")) {
+			inputSideHeight = 100;
+			inputSideWidth = 100;
+			if (mineFieldDiff.equals("easy")) {
+				numMines = (int) ((double)((inputSideHeight * inputSideWidth))*(10.0/100.0));
+			}else if (mineFieldDiff.equals("medium")) {
+				numMines = (int) ((double)((inputSideHeight * inputSideWidth))*(25.0/100.0));
+			}else if (mineFieldDiff.equals("Hard")) {
+				numMines = (int) ((double)((inputSideHeight * inputSideWidth))*(40.0/100.0));
+			}else if (mineFieldDiff.equals("Custom")) {
+				numMines = Validator.getInt("How many mines do you want to test yourself against?", 1, 999);
+			}
+		}else if (mineFieldSize.equals("custom")) {
+			inputSideHeight = Validator.getInt("Enter the height you want your custom Minefield: ");
+			inputSideWidth = Validator.getInt("Enter the width you want your custom Minefield: ");
+			numMines = Validator.getInt("How many mines would you like for your custom Minefield? ", 1, ((inputSideHeight * inputSideWidth) - 1));
+		}
+	}
+	
+	
 	/**
 	 * @param args
 	 */
@@ -13,10 +61,21 @@ public class MineDisplay {
 		Scanner scn = new Scanner(System.in);
 		// user choosing size of mine
 
-		int inputSideLength = Validator.getInt("How big would you want the side length of the minefield? ");
-		int inputNumMines = Validator.getInt("How many mines do you want to test yourself against?", 1,
-				(inputSideLength * inputSideLength));
+		determineSizeAndDifficulty(Validator.getStringSize("Please enter the size (Small, Medium, Large, Custom) of the Mine Field: "),Validator.getStringDifficulty("Please enter the difficulty (# of mines: Easy, Medium, Hard, Custom) of your MineField? "));
+		
+//		int inputSideLength = Validator.getInt("How big would you want the side length of the Minefield? ");
+//		int inputSideHeight = Validator.getInt("How heigh would you want your Minefield? ");
+//		int inputSideWidth = Validator.getInt("How wide would you want your Minefield? ");
+//		int inputNumMines = Validator.getInt("How many mines do you want to test yourself against?", 1,
+//				(inputSideLength * inputSideLength));
+//		String sizeOfMineField= Validator.getStringSize("Please enter the size (Small, Medium, Large, Custom) of the Mine Field: ");
+//		String difficultyOfMineField = Validator.getStringDifficulty("Please enter the difficulty (# of mines: Easy, Medium, Hard, Custom) of your MineField? ");
+		
+		
 
+			
+		}
+		
 		// int minWidth = scn.nextInt();
 		// System.out.println("How many cells height would you like your mine?");
 		// int minHeight = scn.nextInt();
