@@ -28,7 +28,6 @@ public class MineDisplay {
 		// user chooses a cell and if they want to flag it
 		// System.out.println("Choose your cell in index format and if you want to flag
 		// that index:");
-
 		//2,5 6,7
 		GameInstance runningGame = new GameInstance(inputSideLength, inputNumMines);
 		runningGame.displayGame();
@@ -52,7 +51,6 @@ public class MineDisplay {
 
 		// System.out.println("You Exploded!");
 		// runningGame.displayGame();
-
 
 		// String usersChoiceLocation = Validator.getString("Use the following format
 		// 1,1,F or 1,1,G: ");
