@@ -26,6 +26,7 @@ public class CellField {
 		initState = InitCellState.Free;
 	}
 
+
 	/**
 	 * 
 	 * @return

@@ -28,14 +28,15 @@ public class MineDisplay {
 		// that index:");
 		GameInstance runningGame = new GameInstance(inputSideLength, 9);
 		runningGame.displayGame();
-		//while()
+		
+		while(loseCondition == false) {
 		int xInput = Validator.getInt("Enter horizontal index of cell you want to flag or check: ", 1, inputSideLength);
 		int yInput = Validator.getInt("Enter vertical index of cell you want to flag or check: ", 1, inputSideLength);
 		boolean trueFlag = getFlagOrUncover(scn);
-		MineController.processInput(yInput-1, xInput-1, trueFlag, inputSideLength, runningGame.getGameMineField());
+		boolean loseCondition = MineController.processInput(yInput-1, xInput-1, trueFlag, inputSideLength, runningGame.getGameMineField());
 		runningGame.displayGame();
 		System.out.println();
-		
+		}
 		
 //		while (true) {
 //			runningGame.displayGame();
