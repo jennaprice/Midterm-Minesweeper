@@ -33,8 +33,8 @@ public class GameInstance {
 			if (r == 0) {
 				System.out.print(" ");
 			}
+			System.out.println();
 		}
-		System.out.println();
 		for (CellField[] row : gameMineField) {
 			if (k < 10) {
 				System.out.print(k + " ");
@@ -47,7 +47,6 @@ public class GameInstance {
 			k++;
 			System.out.println();
 		}
-
 	}
 
 	public boolean winCondition() {

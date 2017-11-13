@@ -1,9 +1,56 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-// import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
-
 public class MineDisplay {
+	static int inputSideHeight;
+	static int inputSideWidth;
+	static int numMines;
+
+	public static void determineSizeAndDifficulty(String mineFieldSize, String mineFieldDiff) {
+
+		if (mineFieldSize.equals("small")) {
+			inputSideHeight = 10;
+			inputSideWidth = 10;
+			if (mineFieldDiff.equals("easy")) {
+				numMines = (int) ((double) ((inputSideHeight * inputSideWidth)) * (10.0 / 100.0));
+			} else if (mineFieldDiff.equals("medium")) {
+				numMines = (int) ((double) ((inputSideHeight * inputSideWidth)) * (25.0 / 100.0));
+			} else if (mineFieldDiff.equals("Hard")) {
+				numMines = (int) ((double) ((inputSideHeight * inputSideWidth)) * (40.0 / 100.0));
+			} else if (mineFieldDiff.equals("Custom")) {
+				numMines = Validator.getInt("How many mines do you want to test yourself against?", 1, 99);
+			}
+		} else if (mineFieldSize.equals("medium")) {
+			inputSideHeight = 50;
+			inputSideWidth = 50;
+			if (mineFieldDiff.equals("easy")) {
+				numMines = (int) ((double) ((inputSideHeight * inputSideWidth)) * (10.0 / 100.0));
+			} else if (mineFieldDiff.equals("medium")) {
+				numMines = (int) ((double) ((inputSideHeight * inputSideWidth)) * (25.0 / 100.0));
+			} else if (mineFieldDiff.equals("Hard")) {
+				numMines = (int) ((double) ((inputSideHeight * inputSideWidth)) * (40.0 / 100.0));
+			} else if (mineFieldDiff.equals("Custom")) {
+				numMines = Validator.getInt("How many mines do you want to test yourself against?", 1, 199);
+			}
+		} else if (mineFieldSize.equals("large")) {
+			inputSideHeight = 100;
+			inputSideWidth = 100;
+			if (mineFieldDiff.equals("easy")) {
+				numMines = (int) ((double) ((inputSideHeight * inputSideWidth)) * (10.0 / 100.0));
+			} else if (mineFieldDiff.equals("medium")) {
+				numMines = (int) ((double) ((inputSideHeight * inputSideWidth)) * (25.0 / 100.0));
+			} else if (mineFieldDiff.equals("Hard")) {
+				numMines = (int) ((double) ((inputSideHeight * inputSideWidth)) * (40.0 / 100.0));
+			} else if (mineFieldDiff.equals("Custom")) {
+				numMines = Validator.getInt("How many mines do you want to test yourself against?", 1, 999);
+			}
+		} else if (mineFieldSize.equals("custom")) {
+			inputSideHeight = Validator.getInt("Enter the height you want your custom Minefield: ");
+			inputSideWidth = Validator.getInt("Enter the width you want your custom Minefield: ");
+			numMines = Validator.getInt("How many mines would you like for your custom Minefield? ", 1,
+					((inputSideHeight * inputSideWidth) - 1));
+		}
+	}
 
 	/**
 	 * @param args
@@ -13,9 +60,25 @@ public class MineDisplay {
 		Scanner scn = new Scanner(System.in);
 		// user choosing size of mine
 
-		int inputSideLength = Validator.getInt("How big would you want the side length of the minefield? ");
-		int inputNumMines = Validator.getInt("How many mines do you want to test yourself against?", 1,
-				(inputSideLength * inputSideLength));
+		determineSizeAndDifficulty(
+				Validator.getStringSize("Please enter the size (Small, Medium, Large, Custom) of the Mine Field: "),
+				Validator.getStringDifficulty(
+						"Please enter the difficulty (# of mines: Easy, Medium, Hard, Custom) of your MineField? "));
+
+		// int inputSideLength = Validator.getInt("How big would you want the side
+		// length of the Minefield? ");
+		// int inputSideHeight = Validator.getInt("How heigh would you want your
+		// Minefield? ");
+		// int inputSideWidth = Validator.getInt("How wide would you want your
+		// Minefield? ");
+		// int inputNumMines = Validator.getInt("How many mines do you want to test
+		// yourself against?", 1,
+		// (inputSideLength * inputSideLength));
+		// String sizeOfMineField= Validator.getStringSize("Please enter the size
+		// (Small, Medium, Large, Custom) of the Mine Field: ");
+		// String difficultyOfMineField = Validator.getStringDifficulty("Please enter
+		// the difficulty (# of mines: Easy, Medium, Hard, Custom) of your MineField?
+		// ");
 
 		// int minWidth = scn.nextInt();
 		// System.out.println("How many cells height would you like your mine?");
@@ -28,73 +91,26 @@ public class MineDisplay {
 		// user chooses a cell and if they want to flag it
 		// System.out.println("Choose your cell in index format and if you want to flag
 		// that index:");
-		//2,5 6,7
-		GameInstance runningGame = new GameInstance(inputSideLength, inputNumMines);
+		// 2,5 6,7
+		GameInstance runningGame = new GameInstance(inputSideHeight, numMines);
 		runningGame.displayGame();
+
 		boolean loseCondition = false;
 		while (!loseCondition && !(runningGame.winCondition())) {
 			// while()
 			int xInput = Validator.getInt("Enter horizontal index of cell you want to flag or check: ", 1,
-					inputSideLength);
+					inputSideWidth);
 			int yInput = Validator.getInt("Enter vertical index of cell you want to flag or check: ", 1,
-					inputSideLength);
+					inputSideHeight);
 			boolean trueFlag = getFlagOrUncover(scn);
-			loseCondition = MineController.processInput(yInput - 1, xInput - 1, trueFlag, inputSideLength,
+			loseCondition = MineController.processInput(yInput - 1, xInput - 1, trueFlag, inputSideWidth,
 					runningGame.getGameMineField());
 			runningGame.displayGame();
 			System.out.println();
 		}
 
-		// while (true) {
-		// runningGame.displayGame();
-		// }
-
-		// System.out.println("You Exploded!");
-		// runningGame.displayGame();
-
-		// String usersChoiceLocation = Validator.getString("Use the following format
-		// 1,1,F or 1,1,G: ");
-		// String[] usersLoc1 = usersChoiceLocation.split(",");
-		// String userLoc1A = usersLoc1[0];
-		// String userLoc1B = usersLoc1[1];
-		// String userLoc1C = usersLoc1[2];
-		// int userLocA = Integer.parseInt(userLoc1A);
-		// int userLocB = Integer.parseInt(userLoc1B);
-		// String box = "this should never be";
-		// System.out.println(userLoc1C);
-		// System.out.println(userLocA);
-		// System.out.println(userLocB);
-
-		/****
-		 * verification variables: box
-		 * 
-		 */
-
-		/*
-		 * System.out.println(" Please provide number in box: "); box = scn.nextLine();
-		 * 
-		 * if (userLoc1C.equalsIgnoreCase("F")) { for (int k = 0; k < userLocA; k++) {
-		 * for (int l = 0; l < userLocB; l++) { }
-		 * 
-		 * } //change state at x,y // displayMinefield or printMinefield method
-		 * System.out.println(fl + " @ k,l"); }
-		 * 
-		 * if (box.equalsIgnoreCase("0") && !(userLoc1C.equalsIgnoreCase("F"))) { //
-		 * need to print 0 or blank box or no box in place of box
-		 * System.out.println("0 @"); } else if ((box.equalsIgnoreCase("1") ||
-		 * box.equalsIgnoreCase("2") || box.equalsIgnoreCase("3") ||
-		 * box.equalsIgnoreCase("4") || box.equalsIgnoreCase("5") ||
-		 * box.equalsIgnoreCase("6") || box.equalsIgnoreCase("7") ||
-		 * box.equalsIgnoreCase("8")) && !(userLoc1C.equalsIgnoreCase("F"))) { // these
-		 * all get the same treatment of // printing the // number in place of box
-		 * System.out.println("# other than 0 and 9"); } else if
-		 * (box.equalsIgnoreCase("9") && !(userLoc1C.equalsIgnoreCase("F"))) {
-		 * System.out.println(as + "GameOver"); }
-		 * 
-		 * else { System.out.println(); }
-		 */
-
 		scn.close();
+		Validator.closeScanner();
 	}
 
 	public static boolean getFlagOrUncover(Scanner sc) {

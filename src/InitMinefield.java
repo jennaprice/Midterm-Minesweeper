@@ -17,7 +17,10 @@ public class InitMinefield {
 	}
 
 	public static CellField[][] genMineFieldObjects(int width, int height, int mineCount) {
-		return null;
+		CellField[][] minesweeperField = new CellField[height][width];
+		distributeMines(mineCount, width, height, minesweeperField);
+		calculateNeighbors(width, height, minesweeperField);
+		return minesweeperField;
 	}
 
 	/**
@@ -59,6 +62,30 @@ public class InitMinefield {
 		while (minesPlacedSoFar < mineC) {
 			int x = r.nextInt(sideL);
 			int y = r.nextInt(sideL);
+			if (mineField[x][y].getCellState() == InitCellState.Free) {
+				mineField[x][y].setCellState(InitCellState.Mine);
+				minesPlacedSoFar++;
+			}
+		}
+
+	}
+	
+	public static void distributeMines(int mineC, int width, int length, CellField[][] mineField) {
+		// Initially populate each cell in true minefield with free spaces
+		for (int i = 0; i < mineField.length; i++) {
+			for (int j = 0; j < mineField[i].length; j++) {
+				mineField[i][j] = new CellField(i, j);
+				//System.out.print(mineField[i][j].getCellState());
+			}
+			// System.out.println();
+		}
+
+		//Randomly populate true minefield with mines
+		Random r = new Random(5);
+		int minesPlacedSoFar = 0;
+		while (minesPlacedSoFar < mineC) {
+			int x = r.nextInt(length);
+			int y = r.nextInt(width);
 			if (mineField[x][y].getCellState() == InitCellState.Free) {
 				mineField[x][y].setCellState(InitCellState.Mine);
 				minesPlacedSoFar++;
@@ -115,7 +142,19 @@ public class InitMinefield {
 			}
 		}
 	}
-
+	
+	public static void calculateNeighbors(int width, int height, CellField[][] mineField) {
+		// For each value in the array, determine every mine that is nearby if it's not
+		// a mine
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				if (mineField[y][x].getCellState() != InitCellState.Mine) {
+					// If not a mine, check nearby mines
+					mineField[y][x].setCellState(minesNear(y, x, height, width, mineField));
+				}
+			}
+		}
+	}
 	/**
 	 * @param sideL
 	 *            Size in int of width and height of minefield
@@ -153,6 +192,16 @@ public class InitMinefield {
 		// we need to check also that we're not out of array bounds as that would
 		// be an error
 		if (y >= 0 && y < sideL && x >= 0 && x < sideL && (mineField[y][x].getCellState() == InitCellState.Mine)) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+	
+	public static int mineAt(int y, int x, int height, int width, CellField[][] mineField) {
+		// we need to check also that we're not out of array bounds as that would
+		// be an error
+		if (y >= 0 && y < height && x >= 0 && x < width && (mineField[y][x].getCellState() == InitCellState.Mine)) {
 			return 1;
 		} else {
 			return 0;
@@ -206,6 +255,26 @@ public class InitMinefield {
 		countOfNeighborMines += mineAt(y + 1, x - 1, sideL, mineField); // SW
 		countOfNeighborMines += mineAt(y + 1, x, sideL, mineField); // S
 		countOfNeighborMines += mineAt(y + 1, x + 1, sideL, mineField); // SE
+		if (countOfNeighborMines > 0) {
+			return InitCellState.fromOrdinal(countOfNeighborMines);
+		} else {
+			return InitCellState.Free;
+		}
+
+	}
+	
+	public static InitCellState minesNear(int y, int x, int height, int width, CellField[][] mineField) {
+		int countOfNeighborMines = 0;
+		// check mines in all directions, increment for each mine found starting on the
+		// NW side
+		countOfNeighborMines += mineAt(y - 1, x - 1, height, width, mineField); // NW
+		countOfNeighborMines += mineAt(y - 1, x, height, width, mineField); // N
+		countOfNeighborMines += mineAt(y - 1, x + 1, height, width, mineField); // NE
+		countOfNeighborMines += mineAt(y, x - 1, height, width, mineField); // W
+		countOfNeighborMines += mineAt(y, x + 1, height, width, mineField); // E
+		countOfNeighborMines += mineAt(y + 1, x - 1, height, width, mineField); // SW
+		countOfNeighborMines += mineAt(y + 1, x, height, width, mineField); // S
+		countOfNeighborMines += mineAt(y + 1, x + 1, height, width, mineField); // SE
 		if (countOfNeighborMines > 0) {
 			return InitCellState.fromOrdinal(countOfNeighborMines);
 		} else {
