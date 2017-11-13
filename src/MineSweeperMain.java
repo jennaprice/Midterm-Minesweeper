@@ -21,8 +21,8 @@ public class MineSweeperMain {
 		int col = scn.nextInt();
 		System.out.println("Would you like to choose?");
 		int row = scn.nextInt();
-		runningGame.processInput(col, row, false, 10);
-		runningGame.displayGame();
+		// runningGame.processInput(col, row, false, 10);
+		// runningGame.displayGame();
 		scn.close();
 	}
 

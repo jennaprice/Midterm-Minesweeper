@@ -68,7 +68,8 @@ public class CellField {
 	public String displayCell() {
 
 		if (viewState.toString().equalsIgnoreCase("covered")) {
-			return String.valueOf('\u2588');
+			// return String.valueOf('\u2588');
+			return "  ";
 		} else if (viewState.toString().equalsIgnoreCase("flagged")) {
 			return String.valueOf('\u2691');
 		} else if (initState.ordinal() == 9) { // bombs
