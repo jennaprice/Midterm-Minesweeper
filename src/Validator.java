@@ -9,34 +9,6 @@ public class Validator {
 
 	static Scanner sc = new Scanner(System.in);
 
-//	public static boolean parseStringCellLocation(CellField[][] gameMinefield) {
-//		boolean flagged;
-//		System.out.println("Choose your cell in index and if you want to flag that index...");
-//		System.out.println("only choose F for flagging a mine and G if not flagging at all");
-//		String usersChoiceLocation = getString("Use the following format 1,1,F or 1,1,G: ");
-//		String[] usersLoc1 = usersChoiceLocation.split(",");
-//		String userLoc1A = usersLoc1[0];
-//		String userLoc1B = usersLoc1[1];
-//		String userLoc1C = usersLoc1[2];
-//		int userLocA = Integer.parseInt(userLoc1A);
-//		int userLocB = Integer.parseInt(userLoc1B);
-//		System.out.println(userLoc1C);
-//		System.out.println(userLocA);
-//		System.out.println(userLocB);
-//		CellField calledCell = gameMinefield[userLocA][userLocB];
-//		if (userLoc1C.equalsIgnoreCase("f")) {
-//			calledCell.setViewState(ViewStatus.FLAGGED);
-//			flagged = true;
-//			return true;
-//		} else {
-//
-//			calledCell.setViewState(ViewStatus.UNCOVERED);
-//			return calledCell.checkLocation();
-//			// we will call tristan's method TO CEHCK OTHER CELLS (userLocA, userLocB,
-//			// flagged);
-//		}
-//	}
-
 	/**
 	 * This method returns a String from the User
 	 * 
@@ -50,41 +22,41 @@ public class Validator {
 		sc.nextLine(); // discard any other data entered on the line
 		return s;
 	}
+
 	public static String getStringSize(String prompt) {
-		
+
 		boolean isValid = false;
 		System.out.print(prompt);
 		String s = sc.next(); // read user entry
 		sc.nextLine(); // discard any other data entered on the line
 		while (isValid == false) {
-			if (s.equalsIgnoreCase("small") || s.equalsIgnoreCase("medium") || s.equalsIgnoreCase("large") || s.equalsIgnoreCase("custom")) {
+			if (s.equalsIgnoreCase("small") || s.equalsIgnoreCase("medium") || s.equalsIgnoreCase("large")
+					|| s.equalsIgnoreCase("custom")) {
 				isValid = true;
-				System.out.println("your choice is valid. please continue game....");
+			} else {
+				System.out.println("Error! Invalid choice. Try again.");
 			}
-		else {
-			System.out.println("Error! Invalid choice. Try again.");
-		}
 		}
 		return s.toLowerCase();
 	}
-public static String getStringDifficulty(String prompt) {
-		
+
+	public static String getStringDifficulty(String prompt) {
+
 		boolean isValid = false;
 		System.out.print(prompt);
 		String s = sc.next(); // read user entry
 		sc.nextLine(); // discard any other data entered on the line
 		while (isValid == false) {
-			if (s.equalsIgnoreCase("Easy") || s.equalsIgnoreCase("Medium") || s.equalsIgnoreCase("Hard") || s.equalsIgnoreCase("Custom")) {
+			if (s.equalsIgnoreCase("Easy") || s.equalsIgnoreCase("Medium") || s.equalsIgnoreCase("Hard")
+					|| s.equalsIgnoreCase("Custom")) {
 				isValid = true;
-				System.out.println("your choice is valid. please continue game....");
+
+			} else {
+				System.out.println("Error! Invalid choice. Try again.");
 			}
-		else {
-			System.out.println("Error! Invalid choice. Try again.");
-		}
 		}
 		return s.toLowerCase();
 	}
-	
 
 	/**
 	 * This method returns a String from the choices you specify

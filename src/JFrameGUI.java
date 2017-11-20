@@ -9,6 +9,7 @@
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 public class JFrameGUI {
@@ -20,16 +21,24 @@ public class JFrameGUI {
 		f = new JFrame();// creating instance of JFrame
 		// the display should display dynamically based on the size of the existing
 		int sideLength = 10;
-		GameInstance runningGame = new GameInstance(sideLength, 10);
-		CellField[][] mineField = runningGame.getGameMineField();
+
+		Object[] options = { "Small", "Medium", "Large" };
+		int n = JOptionPane.showOptionDialog(f, "Please choose the size of your game", ":",
+				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
+		if (n == 1)
+			sideLength = 25;
+		else if (n == 2)
+			sideLength = 50;
+		MineController mineField = new MineController(sideLength, 15);
+		GameInstance runningGame = new GameInstance(mineField);
 		JButton[][] buttonDisplayArray = new JButton[sideLength][sideLength];
 		// runningGame.removeCovers();
 		int indexX = 100;
 		int indexY = 130;
 
-		for (int i = 0; i < mineField.length; i++) {
-			for (int j = 0; j < mineField[i].length; j++) {
-				String buttonSymbol = mineField[j][i].displayCell();
+		for (int i = 0; i < mineField.getGameMineField().length; i++) {
+			for (int j = 0; j < (mineField.getGameMineField()[i]).length; j++) {
+				String buttonSymbol = (mineField.getGameMineField())[j][i].displayCellGUI();
 				// System.out.println(" button symbol " + buttonSymbol);
 				buttonDisplayArray[i][j] = new JButton(buttonSymbol);
 				buttonDisplayArray[i][j].setBounds(indexY, indexX, 30, 30);
@@ -48,8 +57,8 @@ public class JFrameGUI {
 		 * 
 		 * f.add(b);// adding button in JFrame f.add(c);
 		 */
-		for (int i = 0; i < mineField.length; i++) {
-			for (int j = 0; j < mineField[i].length; j++) {
+		for (int i = 0; i < mineField.getGameMineField().length; i++) {
+			for (int j = 0; j < mineField.getWidth(); j++) {
 				f.add(buttonDisplayArray[i][j]);
 			}
 		}

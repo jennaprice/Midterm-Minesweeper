@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class MineSweeperMain {
+public class TestingMain {
 
 	public static void main(String[] args) {
 		/*

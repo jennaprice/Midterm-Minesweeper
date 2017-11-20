@@ -26,7 +26,6 @@ public class CellField {
 		initState = InitCellState.Free;
 	}
 
-
 	/**
 	 * 
 	 * @return
@@ -41,7 +40,7 @@ public class CellField {
 	 *            gives the status of whether or not the cellLocation has been
 	 *            previously views
 	 */
-	public void setViewState(ViewStatus viewState) {
+	public void setViewStatus(ViewStatus viewState) {
 		this.viewState = viewState;
 	}
 
@@ -66,11 +65,29 @@ public class CellField {
 	 * @return String to display to user, except for bombs represented by 9 and must
 	 *         be filter
 	 */
-	public String displayCell() {
+	public String displayCellText() {
+		if (viewState.toString().equalsIgnoreCase("covered")) {
+			return String.valueOf('\u2588');
+			// return " ";-- gui
+		} else if (viewState.toString().equalsIgnoreCase("flagged")) {
+			return String.valueOf('\u2691');
+		} else if (initState.ordinal() == 9) { // bombs
+			return String.valueOf('\u229b');
+		} else if (initState.ordinal() == 0) {
+			return String.valueOf('\u25a1');
+		} else {
+			if (initState.ordinal() > 0) {
+				return String.valueOf(initState.ordinal());
+			}
 
+		}
+		return "errorInDisplay";
+	}
+
+	public String displayCellGUI() {
 		if (viewState.toString().equalsIgnoreCase("covered")) {
 			// return String.valueOf('\u2588');
-			return "  ";
+			return " ";
 		} else if (viewState.toString().equalsIgnoreCase("flagged")) {
 			return String.valueOf('\u2691');
 		} else if (initState.ordinal() == 9) { // bombs

@@ -1,53 +1,82 @@
 
 public class MineController {
+	CellField[][] gameMineField;
+	int mines;
+	int area;
 
-	public static boolean processInput(int x, int y, boolean inputFlag, int sideL, CellField[][] currentField) {
-		if (currentField[x][y].getViewStatus() == ViewStatus.COVERED) {
-			if (inputFlag) {
-				currentField[x][y].setViewState(ViewStatus.FLAGGED);
+	public MineController() {
+
+	}
+
+	public MineController(int width, int height, int mineCount) {
+		gameMineField = InitMinefield.genMineFieldObjects(width, height, mineCount);
+		mines = mineCount;
+		area = width * height;
+	}
+
+	public MineController(int sideLength, int mineCount) {
+		gameMineField = InitMinefield.genMineFieldObjects(sideLength, mineCount);
+		area = sideLength * sideLength;
+	}
+
+	public int getHeight() {
+		return gameMineField.length;
+	}
+
+	public int getWidth() {
+		return gameMineField[0].length;
+	}
+
+	public boolean processInput(int row, int column, boolean inputFlag, int sideL) {
+		if (gameMineField[row][column].getViewStatus() == ViewStatus.COVERED) {
+			if (inputFlag) {// if we have chosen he flagging option
+				gameMineField[row][column].setViewStatus(ViewStatus.FLAGGED);
 			} else {
-				InitCellState currentInitState = currentField[x][y].getCellState();
+				InitCellState currentInitState = gameMineField[row][column].getCellState();
 				if (currentInitState == InitCellState.Mine) {
-					currentField[x][y].setViewState(ViewStatus.UNCOVERED);
+					gameMineField[row][column].setViewStatus(ViewStatus.UNCOVERED);
 					return true;
 				} else if (currentInitState == InitCellState.Free) {
 					// Recursive method for uncovering if you select a free square
-					sweepAndCheck(x, y, sideL, currentField);
+					sweepAndCheck(row, column, sideL);
 				} else {
 					// If you nail a number
-					currentField[x][y].setViewState(ViewStatus.UNCOVERED);
+					gameMineField[row][column].setViewStatus(ViewStatus.UNCOVERED);
 				}
 			}
-		} else if ((currentField[x][y].getViewStatus() == ViewStatus.FLAGGED) && inputFlag) {
-			currentField[x][y].setViewState(ViewStatus.COVERED);
-			// If already flagged, unflag
+		} else if ((gameMineField[row][column].getViewStatus() == ViewStatus.FLAGGED) && inputFlag) {
+
+			gameMineField[row][column].setViewStatus(ViewStatus.COVERED);
+			System.out.println("True and unflag row " + row + " column " + column);
+			System.out.println(" state is " + gameMineField[row][column].getViewStatus());
+
+			// If already flagged, unflag - we need to redraw
 		}
 		// else don't update board
 		return false;
 
 	}
 
-	public static boolean processInput(int x, int y, boolean inputFlag, int height, int width,
-			CellField[][] currentField) {
-		if (currentField[x][y].getViewStatus() == ViewStatus.COVERED) {
+	public boolean processInput(int y, int x, boolean inputFlag, int height, int width) {
+		if (gameMineField[y][x].getViewStatus() == ViewStatus.COVERED) {
 			if (inputFlag) {
-				currentField[x][y].setViewState(ViewStatus.FLAGGED);
+				gameMineField[y][x].setViewStatus(ViewStatus.FLAGGED);
 			} else {
-				InitCellState currentInitState = currentField[x][y].getCellState();
+				InitCellState currentInitState = gameMineField[y][x].getCellState();
 				if (currentInitState == InitCellState.Mine) {
-					currentField[x][y].setViewState(ViewStatus.UNCOVERED);
+					gameMineField[y][x].setViewStatus(ViewStatus.UNCOVERED);
 					System.out.println("You hit a mine");
 					return true;
 				} else if (currentInitState == InitCellState.Free) {
 					// Recursive method for uncovering if you select a free square
-					sweepAndCheck(x, y, height, width, currentField);
+					sweepAndCheck(y, x, height, width);
 				} else {
 					// If you nail a number
-					currentField[x][y].setViewState(ViewStatus.UNCOVERED);
+					gameMineField[y][x].setViewStatus(ViewStatus.UNCOVERED);
 				}
 			}
-		} else if ((currentField[x][y].getViewStatus() == ViewStatus.FLAGGED) && inputFlag) {
-			currentField[x][y].setViewState(ViewStatus.COVERED);
+		} else if ((gameMineField[y][x].getViewStatus() == ViewStatus.FLAGGED) && inputFlag) {
+			gameMineField[y][x].setViewStatus(ViewStatus.COVERED);
 			// If already flagged, unflag
 		}
 		// else don't update board
@@ -55,67 +84,108 @@ public class MineController {
 
 	}
 
-	public static void sweepAndCheck(int x, int y, int sideL, CellField[][] currentField) {
-		if ((currentField[x][y].getCellState() == InitCellState.Free)
-				&& (currentField[x][y].getViewStatus() == ViewStatus.COVERED)) {
+	public void sweepAndCheck(int y, int x, int sideL) {
+		if ((gameMineField[y][x].getCellState() == InitCellState.Free)
+				&& (gameMineField[y][x].getViewStatus() == ViewStatus.COVERED)) {
 			// Check every damn cell
-			currentField[x][y].setViewState(ViewStatus.UNCOVERED);
-			sweepAt(y - 1, x - 1, sideL, currentField); // NW
-			sweepAt(y - 1, x, sideL, currentField); // N
-			sweepAt(y - 1, x + 1, sideL, currentField); // NE
-			sweepAt(y, x - 1, sideL, currentField); // W
-			sweepAt(y, x + 1, sideL, currentField); // E
-			sweepAt(y + 1, x - 1, sideL, currentField); // SW
-			sweepAt(y + 1, x, sideL, currentField); // S
-			sweepAt(y + 1, x + 1, sideL, currentField); // SE
+			gameMineField[y][x].setViewStatus(ViewStatus.UNCOVERED);
+			sweepAt(y - 1, x - 1, sideL); // NW
+			sweepAt(y - 1, x, sideL); // N
+			sweepAt(y - 1, x + 1, sideL); // NE
+			sweepAt(y, x - 1, sideL); // W
+			sweepAt(y, x + 1, sideL); // E
+			sweepAt(y + 1, x - 1, sideL); // SW
+			sweepAt(y + 1, x, sideL); // S
+			sweepAt(y + 1, x + 1, sideL); // SE
 
 		} else {
 			// Case for numbers/hints
-			currentField[x][y].setViewState(ViewStatus.UNCOVERED);
+			gameMineField[y][x].setViewStatus(ViewStatus.UNCOVERED);
 		}
 	}
 
-	public static void sweepAndCheck(int x, int y, int height, int width, CellField[][] currentField) {
-		if ((currentField[x][y].getCellState() == InitCellState.Free)
-				&& (currentField[x][y].getViewStatus() == ViewStatus.COVERED)) {
+	public void sweepAndCheck(int y, int x, int height, int width) {
+		if ((gameMineField[y][x].getCellState() == InitCellState.Free)
+				&& (gameMineField[y][x].getViewStatus() == ViewStatus.COVERED)) {
 			// Check every damn cell
-			currentField[x][y].setViewState(ViewStatus.UNCOVERED);
-			sweepAt(y - 1, x - 1, height, width, currentField); // NW
-			sweepAt(y - 1, x, height, width, currentField); // N
-			sweepAt(y - 1, x + 1, height, width, currentField); // NE
-			sweepAt(y, x - 1, height, width, currentField); // W
-			sweepAt(y, x + 1, height, width, currentField); // E
-			sweepAt(y + 1, x - 1, height, width, currentField); // SW
-			sweepAt(y + 1, x, height, width, currentField); // S
-			sweepAt(y + 1, x + 1, height, width, currentField); // SE
+			gameMineField[y][x].setViewStatus(ViewStatus.UNCOVERED);
+			sweepAt(y - 1, x - 1, height, width); // NW
+			sweepAt(y - 1, x, height, width); // N
+			sweepAt(y - 1, x + 1, height, width); // NE
+			sweepAt(y, x - 1, height, width); // W
+			sweepAt(y, x + 1, height, width); // E
+			sweepAt(y + 1, x - 1, height, width); // SW
+			sweepAt(y + 1, x, height, width); // S
+			sweepAt(y + 1, x + 1, height, width); // SE
 
 		} else {
 			// Case for numbers/hints
-			currentField[x][y].setViewState(ViewStatus.UNCOVERED);
+			gameMineField[y][x].setViewStatus(ViewStatus.UNCOVERED);
 		}
 	}
 
-	public static void sweepAt(int x, int y, int sideL, CellField[][] mineField) {
+	public void sweepAt(int x, int y, int sideL) {
 		// Check bounds before sweep, check if the square is free to continue sweeping,
 		// else uncover the number
 		if (y >= 0 && y < sideL && x >= 0 && x < sideL) {
-			if (mineField[y][x].getCellState() == InitCellState.Free) {
-				sweepAndCheck(y, x, sideL, mineField);
+			if (gameMineField[y][x].getCellState() == InitCellState.Free) {
+				sweepAndCheck(y, x, sideL);
 			} else {
-				mineField[y][x].setViewState(ViewStatus.UNCOVERED);
+				gameMineField[y][x].setViewStatus(ViewStatus.UNCOVERED);
 			}
 		}
 	}
 
-	public static void sweepAt(int x, int y, int height, int width, CellField[][] mineField) {
+	public void sweepAt(int x, int y, int height, int width) {
 		// Check bounds before sweep, check if the square is free to continue sweeping,
 		// else uncover the number
 		if (y >= 0 && y < height && x >= 0 && x < width) {
-			if (mineField[y][x].getCellState() == InitCellState.Free) {
-				sweepAndCheck(y, x, height, width, mineField);
+			if (gameMineField[y][x].getCellState() == InitCellState.Free) {
+				sweepAndCheck(y, x, height, width);
 			} else {
-				mineField[y][x].setViewState(ViewStatus.UNCOVERED);
+				gameMineField[y][x].setViewStatus(ViewStatus.UNCOVERED);
 			}
 		}
 	}
+
+	public CellField[][] getGameMineField() {
+		return gameMineField;
+	}
+
+	public void setGameMineField(CellField[][] gameMineField) {
+		this.gameMineField = gameMineField;
+	}
+
+	public void displayGame() {
+
+		int k = 1;
+		for (int r = 0; r <= gameMineField.length; r++) {
+			System.out.print(r + " ");
+			if (r == 0) {
+				System.out.print(" ");
+			}
+		}
+		System.out.println();
+		for (CellField[] row : gameMineField) {
+			if (k < 10) {
+				System.out.print(k + " ");
+			} else {
+				System.out.print(k);
+			}
+			for (int i = 0; i < row.length; i++) {
+				System.out.print(" " + row[i].displayCellText());
+			}
+			k++;
+			System.out.println();
+		}
+	}
+
+	public void removeCovers() {
+		for (int i = 0; i < gameMineField.length; i++) {
+			for (int j = 0; j < gameMineField[i].length; j++) {
+				gameMineField[i][j].setViewStatus(ViewStatus.UNCOVERED);
+			}
+		}
+	}
+
 }

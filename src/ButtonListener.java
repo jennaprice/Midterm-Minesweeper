@@ -4,12 +4,13 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 public class ButtonListener extends JFrame implements ActionListener {
 	private JLabel screenInstructions;
 	private GameInstance runningGame;
-	CellField[][] mineField;
+	MineController mineField;
 	JButton[][] buttonDisplayArray;
 
 	public ButtonListener() {
@@ -23,31 +24,19 @@ public class ButtonListener extends JFrame implements ActionListener {
 		screenInstructions.setBounds(100, 50, 500, 50);
 		add(screenInstructions);
 		int sideLength = 10;
-		runningGame = new GameInstance(sideLength, 10);
-		mineField = runningGame.getGameMineField();
-		buttonDisplayArray = new JButton[sideLength][sideLength];
-		// runningGame.removeCovers();
-		int indexX = 100;
-		int indexY = 130;
-
-		for (int i = 0; i < mineField.length; i++) {
-			for (int j = 0; j < mineField[i].length; j++) {
-				String buttonSymbol = mineField[j][i].displayCell();
-				// System.out.println(" button symbol " + buttonSymbol);
-				buttonDisplayArray[i][j] = new CellButton(i, j, buttonSymbol);
-				buttonDisplayArray[i][j].setBounds(indexY, indexX, 30, 30);
-				buttonDisplayArray[i][j].addActionListener(this);
-				indexX += 30;
-				// System.out.println("Bounds y " + indexY + " x " + indexX);
-			}
-			indexY += 30;
-			indexX = 100;
-		}
-		for (int i = 0; i < mineField.length; i++) {
-			for (int j = 0; j < mineField[i].length; j++) {
-				add(buttonDisplayArray[i][j]);
-			}
-		}
+		Object[] options = { "Large", "Medium", "Small" };
+		int n = JOptionPane.showOptionDialog(this, "Please choose the size of your game", ":",
+				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
+		System.out.println(" n is" + n);
+		if (n == 0)
+			sideLength = 20;
+		else if (n == 1)
+			sideLength = 15;
+		else
+			sideLength = 10;
+		mineField = new MineController(sideLength, 15);
+		runningGame = new GameInstance(mineField);
+		setUpPlayfield(sideLength);
 
 	}
 
@@ -55,18 +44,16 @@ public class ButtonListener extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		CellButton clickedButton = (CellButton) e.getSource();
-		// System.out.println("You clicked!" + clickedButton.toString());
-		// System.out.println("Action event " + (e.getModifiers() &
-		// ActionEvent.SHIFT_MASK));
+
 		if ((e.getModifiers() & ActionEvent.SHIFT_MASK) > 0) {
-			// System.out.println("here");
-			MineController.processInput(clickedButton.getRow(), clickedButton.getColumn(), true,
-					runningGame.gameMineField.length, runningGame.gameMineField);
+			System.out.println(
+					"here flagging" + " row " + clickedButton.getRow() + " column " + clickedButton.getColumn());
+			mineField.processInput(clickedButton.getRow(), clickedButton.getColumn(), true, mineField.getHeight());
 		} else {
-			MineController.processInput(clickedButton.getRow(), clickedButton.getColumn(), false,
-					runningGame.gameMineField.length, runningGame.gameMineField);
+			System.out.println("here" + " row " + clickedButton.getRow() + " column " + clickedButton.getColumn());
+			mineField.processInput(clickedButton.getRow(), clickedButton.getColumn(), false, mineField.getHeight());
 		}
-		// System.out.println("Processed Correctly " + contGame);
+		System.out.println("Processed Correctly updating buttons ");
 		updateButtons();
 		// at the end of every action taken by the user- check to see if they have won
 		// or lost
@@ -77,15 +64,16 @@ public class ButtonListener extends JFrame implements ActionListener {
 
 	public void updateButtons() {
 		int row, col;
-		for (row = 0; row < mineField.length; row++) {
-			for (col = 0; col < mineField[row].length; col++) {
+		mineField.displayGame();
+		for (row = 0; row < mineField.getGameMineField().length; row++) {
+			for (col = 0; col < mineField.getGameMineField()[row].length; col++) {
 				// System.out
 				// .println("Location " + row + "," + col + " " +
 				// mineField[row][col].getViewStatus().toString());
 
-				if (mineField[row][col].getViewStatus() == ViewStatus.UNCOVERED) {
+				if (mineField.getGameMineField()[row][col].getViewStatus() == ViewStatus.UNCOVERED) {
 
-					String changeSymbol = mineField[row][col].displayCell();
+					String changeSymbol = mineField.getGameMineField()[row][col].displayCellGUI();
 					// System.out.println(mineField[row][col].getViewStatus() + " the symb " +
 					// changeSymbol);
 					buttonDisplayArray[row][col].setText(changeSymbol);
@@ -95,11 +83,39 @@ public class ButtonListener extends JFrame implements ActionListener {
 						// System.out.println("here");
 						endGame(false);
 					}
-				} else if (mineField[row][col].getViewStatus().toString().equalsIgnoreCase("flagged")) {
-					String flagSymbol = mineField[row][col].displayCell();
-					buttonDisplayArray[row][col].setText(flagSymbol);
+				} else {
+					String textValue = mineField.getGameMineField()[row][col].displayCellGUI();
+					buttonDisplayArray[row][col].setText(textValue);
 				}
 
+			}
+		}
+
+	}
+
+	public void setUpPlayfield(int sideLength) {
+		buttonDisplayArray = new JButton[sideLength][sideLength];
+
+		// runningGame.removeCovers();
+		int indexX = 100;
+		int indexY = 130;
+
+		for (int i = 0; i < mineField.getHeight(); i++) {
+			for (int j = 0; j < mineField.getWidth(); j++) {
+				String buttonSymbol = mineField.getGameMineField()[j][i].displayCellGUI();
+				// System.out.println(" button symbol " + buttonSymbol);
+				buttonDisplayArray[i][j] = new CellButton(i, j, buttonSymbol);
+				buttonDisplayArray[i][j].setBounds(indexY, indexX, 30, 30);
+				buttonDisplayArray[i][j].addActionListener(this);
+				indexX += 30;
+				// System.out.println("Bounds y " + indexY + " x " + indexX);
+			}
+			indexY += 30;
+			indexX = 100;
+		}
+		for (int i = 0; i < mineField.getHeight(); i++) {
+			for (int j = 0; j < mineField.getWidth(); j++) {
+				add(buttonDisplayArray[i][j]);
 			}
 		}
 
@@ -108,14 +124,14 @@ public class ButtonListener extends JFrame implements ActionListener {
 	public void endGame(boolean won) {
 		String gameEndMethod;
 		if (!won) {
-			runningGame.removeCovers();
+			mineField.removeCovers();
 			gameEndMethod = "Oh No you lost";
 		} else {
 			gameEndMethod = "Congratulations";
 		}
-		for (int row = 0; row < mineField.length; row++) {
-			for (int col = 0; col < mineField[row].length; col++) {
-				String changeSymbol = mineField[row][col].displayCell();
+		for (int row = 0; row < mineField.getGameMineField().length; row++) {
+			for (int col = 0; col < mineField.getGameMineField()[row].length; col++) {
+				String changeSymbol = mineField.getGameMineField()[row][col].displayCellGUI();
 				buttonDisplayArray[row][col].setText(changeSymbol);
 				buttonDisplayArray[row][col].setEnabled(false);
 			}
